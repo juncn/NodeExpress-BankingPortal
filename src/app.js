@@ -44,8 +44,10 @@ app.get('/transfer', (req, res) => {
 app.post('/transfer', (req, res) => {
   // Calculate and set the FROM and TO balance
   // Convert account data to JSON
-  accounts[req.body.from].balance = accounts[req.body.from].balance - parseInt(req.body.amount);
-  accounts[req.body.to].balance = accounts[req.body.to].balance + parseInt(req.body.amount);
+  accounts[req.body.from].balance =
+    accounts[req.body.from].balance - parseInt(req.body.amount);
+  accounts[req.body.to].balance =
+    accounts[req.body.to].balance + parseInt(req.body.amount);
   const accountsJSON = JSON.stringify(accounts);
 
   // Write account data to JSON file
@@ -56,6 +58,25 @@ app.post('/transfer', (req, res) => {
   );
 
   res.render('transfer', { message: 'Transfer Completed' });
+});
+
+app.get('/payment', (req, res) => {
+  res.render('payment', { account: accounts.credit });
+});
+
+app.post('/payment', (req, res) => {
+  accounts.credit.balance = accounts.credit.balance - parseInt(req.body.amount);
+  accounts.credit.available = accounts.credit.available + parseInt(req.body.amount);
+  const accountsJSON = JSON.stringify(accounts);
+  fs.writeFileSync(
+    path.join(__dirname, 'json/accounts.json'),
+    accountsJSON,
+    'utf8'
+  );
+  res.render('payment', {
+    message: 'Payment Successful',
+    account: accounts.credit
+  });
 });
 
 app.listen(3000, () => console.log('PS Project Running on port 3000!'));
