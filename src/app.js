@@ -49,8 +49,13 @@ app.post('/transfer', (req, res) => {
   const accountsJSON = JSON.stringify(accounts);
 
   // Write account data to JSON file
-  fs.writeFileSync(path.join(__dirname, 'json/accounts.json'), accountsJSON, 'utf8');
+  fs.writeFileSync(
+    path.join(__dirname, 'json/accounts.json'),
+    accountsJSON,
+    'utf8'
+  );
 
+  res.render('transfer', { message: 'Transfer Completed' });
 });
 
 app.listen(3000, () => console.log('PS Project Running on port 3000!'));
