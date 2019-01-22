@@ -42,9 +42,15 @@ app.get('/transfer', (req, res) => {
 });
 
 app.post('/transfer', (req, res) => {
+  // Calculate and set the FROM and TO balance
+  // Convert account data to JSON
   accounts[req.body.from].balance = accounts[req.body.from].balance - parseInt(req.body.amount);
   accounts[req.body.to].balance = accounts[req.body.to].balance + parseInt(req.body.amount);
   const accountsJSON = JSON.stringify(accounts);
+
+  // Write account data to JSON file
+  fs.writeFileSync(path.join(__dirname, 'json/accounts.json'), accountsJSON, 'utf8');
+
 });
 
 app.listen(3000, () => console.log('PS Project Running on port 3000!'));
