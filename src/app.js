@@ -41,4 +41,9 @@ app.get('/transfer', (req, res) => {
   res.render('transfer');
 });
 
+app.post('/transfer', (req, res) => {
+  accounts[req.body.from].balance = accounts[req.body.from].balance - parseInt(req.body.amount);
+  accounts[req.body.to].balance = accounts[req.body.to].balance + parseInt(req.body.amount);
+});
+
 app.listen(3000, () => console.log('PS Project Running on port 3000!'));
